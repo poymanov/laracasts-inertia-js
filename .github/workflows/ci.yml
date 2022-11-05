@@ -42,7 +42,7 @@ jobs:
       - name: Run PHPUnit
         env:
           DB_HOST: localhost
-        run: ./vendor/bin/phpunit
+        run: composer test
   lint:
     runs-on: ubuntu-latest
 
