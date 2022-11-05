@@ -102,6 +102,8 @@ jobs:
         run: php artisan migrate
 
       - name: Run Laravel IDE Helper
+        env:
+          DB_HOST: localhost
         run: composer ide-helper-generate && composer ide-helper-models && composer composer ide-helper-meta
 
       - name: Run Larastan
