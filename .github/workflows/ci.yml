@@ -104,7 +104,7 @@ jobs:
       - name: Run Laravel IDE Helper
         env:
           DB_HOST: localhost
-        run: composer ide-helper-generate && composer ide-helper-models && composer ide-helper-meta
+        run: composer ide-helper-models
 
       - name: Run Larastan
         run: composer phpstan
