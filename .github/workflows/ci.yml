@@ -77,5 +77,8 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction
 
+      - name: Run Laravel IDE Helper
+        run: composer ide-helper-models
+
       - name: Run Larastan
         run: composer phpstan
