@@ -36,8 +36,8 @@ jobs:
       - name: Install NPM dependencies
         run: npm install
 
-      - name: Run frontend
-        run: npm run dev
+      - name: Build assets
+        run: npm run build
 
       - name: Copy environment file
         run: cp .env.github-actions .env
