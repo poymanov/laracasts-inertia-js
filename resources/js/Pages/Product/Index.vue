@@ -1,9 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head} from '@inertiajs/inertia-vue3';
+import Pagination from "@/Shared/Pagination.vue";
 
 defineProps({
-    products: Array,
+    products: Object,
 });
 </script>
 
@@ -24,7 +24,7 @@ defineProps({
                         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                             <tbody>
                             <tr
-                                v-for="product in products" :key="product.id"
+                                v-for="product in products.data" :key="product.id"
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     {{ product.name }}
@@ -33,6 +33,10 @@ defineProps({
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 mt-5" v-if="products.links.length > 3">
+                    <Pagination :links="products.links"/>
                 </div>
             </div>
         </div>

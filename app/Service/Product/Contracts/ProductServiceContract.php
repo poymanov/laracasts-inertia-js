@@ -2,14 +2,17 @@
 
 namespace App\Service\Product\Contracts;
 
-use App\Service\Product\Dtos\ProductDto;
+use App\Service\Product\Dtos\ProductFilterDto;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductServiceContract
 {
     /**
      * Получение всех товаров
      *
-     * @return ProductDto[]
+     * @param ProductFilterDto $filter
+     *
+     * @return LengthAwarePaginator
      */
-    public function findAll(): array;
+    public function findAll(ProductFilterDto $filter): LengthAwarePaginator;
 }
