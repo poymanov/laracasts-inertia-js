@@ -10,10 +10,11 @@ class ProductFilterDtoFactory implements ProductFilterDtoFactoryContract
     /**
      * @inheritDoc
      */
-    public function createFromParams(int $paginationLimit): ProductFilterDto
+    public function createFromParams(int $paginationLimit, ?string $name): ProductFilterDto
     {
         $dto                  = new ProductFilterDto();
         $dto->paginationLimit = $paginationLimit;
+        $dto->name            = $name;
 
         return $dto;
     }

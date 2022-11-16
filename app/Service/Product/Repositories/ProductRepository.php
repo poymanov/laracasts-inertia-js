@@ -20,7 +20,11 @@ class ProductRepository implements ProductRepositoryContract
     public function findAll(ProductFilterDto $filter): LengthAwarePaginator
     {
         return Product::query()
+            ->when($filter->name, function ($query, $name) {
+                $query->where('name', 'like', "%{$name}%");
+            })
             ->paginate($filter->paginationLimit)
+            ->withQueryString()
             ->through(fn (Product $product) => $this->productDtoFactory->createFromModel($product));
     }
 }
