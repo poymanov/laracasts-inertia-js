@@ -12,7 +12,8 @@ class ProductController extends Controller
 {
     public function __construct(
         private readonly ProductServiceContract $productService,
-        private readonly ProductFilterDtoFactoryContract $productFilterDtoFactory
+        private readonly ProductFilterDtoFactoryContract $productFilterDtoFactory,
+        private readonly int $paginationLimit
     ) {
     }
 
@@ -24,7 +25,7 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
         $filter   = $this->productFilterDtoFactory->createFromParams(
-            config('pagination.products'),
+            $this->paginationLimit,
             $request->get('name')
         );
         $products = $this->productService->findAll($filter);

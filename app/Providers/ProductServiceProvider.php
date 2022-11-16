@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\ProductController;
 use App\Service\Product\Contracts\ProductDtoFactoryContract;
 use App\Service\Product\Contracts\ProductFilterDtoFactoryContract;
 use App\Service\Product\Contracts\ProductRepositoryContract;
@@ -21,6 +22,13 @@ class ProductServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(ProductController::class, function ($app) {
+            return new ProductController(
+                $this->app->get(ProductServiceContract::class),
+                $this->app->get(ProductFilterDtoFactoryContract::class),
+                (int)config('pagination.products')
+            );
+        });
         $this->app->singleton(ProductFilterDtoFactoryContract::class, ProductFilterDtoFactory::class);
         $this->app->singleton(ProductDtoFactoryContract::class, ProductDtoFactory::class);
         $this->app->singleton(ProductRepositoryContract::class, ProductRepository::class);
