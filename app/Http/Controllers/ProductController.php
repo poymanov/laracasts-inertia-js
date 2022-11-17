@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Product\StoreRequest;
 use App\Service\Product\Contracts\ProductFilterDtoFactoryContract;
 use App\Service\Product\Contracts\ProductServiceContract;
+use App\Service\Product\Exceptions\ProductCreateException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -34,5 +39,33 @@ class ProductController extends Controller
             'products' => $products,
             'filters'  => $filter,
         ]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function create()
+    {
+        return Inertia::render('Product/Create');
+    }
+
+    /**
+     * @param StoreRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function store(StoreRequest $request)
+    {
+        try {
+            $this->productService->create($request->get('name'));
+
+            return redirect()->route('product.index');
+        } catch (ProductCreateException $e) {
+            return redirect()->back()->with('alert.error', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
     }
 }

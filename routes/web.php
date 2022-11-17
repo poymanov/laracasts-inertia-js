@@ -27,7 +27,9 @@ Route::get('/dashboard', function () {
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'products', 'as' => 'product.'], function () {
         Route::get('', [ProductController::class, 'index'])->name('index');
+        Route::get('create', [ProductController::class, 'create'])->name('create');
+        Route::post('', [ProductController::class, 'store'])->name('store');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Http\Controllers\ProductController;
+use App\Service\Product\Contracts\ProductCreateDtoFactoryContract;
 use App\Service\Product\Contracts\ProductDtoFactoryContract;
 use App\Service\Product\Contracts\ProductFilterDtoFactoryContract;
 use App\Service\Product\Contracts\ProductRepositoryContract;
 use App\Service\Product\Contracts\ProductServiceContract;
+use App\Service\Product\Factories\ProductCreateDtoFactory;
 use App\Service\Product\Factories\ProductDtoFactory;
 use App\Service\Product\Factories\ProductFilterDtoFactory;
 use App\Service\Product\ProductService;
@@ -29,6 +31,8 @@ class ProductServiceProvider extends ServiceProvider
                 (int)config('pagination.products')
             );
         });
+
+        $this->app->singleton(ProductCreateDtoFactoryContract::class, ProductCreateDtoFactory::class);
         $this->app->singleton(ProductFilterDtoFactoryContract::class, ProductFilterDtoFactory::class);
         $this->app->singleton(ProductDtoFactoryContract::class, ProductDtoFactory::class);
         $this->app->singleton(ProductRepositoryContract::class, ProductRepository::class);

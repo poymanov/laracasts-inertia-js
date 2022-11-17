@@ -3,6 +3,7 @@
 namespace App\Service\Product\Contracts;
 
 use App\Service\Product\Dtos\ProductFilterDto;
+use App\Service\Product\Exceptions\ProductCreateException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductServiceContract
@@ -15,4 +16,14 @@ interface ProductServiceContract
      * @return LengthAwarePaginator
      */
     public function findAll(ProductFilterDto $filter): LengthAwarePaginator;
+
+    /**
+     * Создание товара
+     *
+     * @param string $name
+     *
+     * @return void
+     * @throws ProductCreateException
+     */
+    public function create(string $name): void;
 }
