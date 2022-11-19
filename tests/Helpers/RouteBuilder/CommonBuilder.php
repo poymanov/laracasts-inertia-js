@@ -43,4 +43,12 @@ class CommonBuilder
     {
         return '/register';
     }
+
+    /**
+     * @return string
+     */
+    public function dashboard(): string
+    {
+        return '/dashboard';
+    }
 }

@@ -6,14 +6,35 @@ use App\Models\Product;
 use App\Service\Product\Contracts\ProductDtoFactoryContract;
 use App\Service\Product\Contracts\ProductRepositoryContract;
 use App\Service\Product\Dtos\ProductCreateDto;
+use App\Service\Product\Dtos\ProductDto;
 use App\Service\Product\Dtos\ProductFilterDto;
 use App\Service\Product\Exceptions\ProductCreateException;
+use App\Service\Product\Exceptions\ProductNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository implements ProductRepositoryContract
 {
     public function __construct(private readonly ProductDtoFactoryContract $productDtoFactory)
     {
+    }
+
+    /**
+     * Получение товара по ID
+     *
+     * @param string $id
+     *
+     * @return ProductDto
+     * @throws ProductNotFoundException
+     */
+    public function findOneById(string $id): ProductDto
+    {
+        $product = Product::where(['id' => $id])->first();
+
+        if (is_null($product)) {
+            throw new ProductNotFoundException($id);
+        }
+
+        return $this->productDtoFactory->createFromModel($product);
     }
 
     /**

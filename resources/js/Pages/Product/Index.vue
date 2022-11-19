@@ -56,6 +56,9 @@ watch(nameFilter, debounce(function (value) {
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
                                     {{ product.name }}
                                 </th>
+                                <td>
+                                    <Link :href="route('product.show', product.id)" v-text="'View'" class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"/>
+                                </td>
                             </tr>
                             </tbody>
                         </table>

@@ -6,6 +6,7 @@ use App\Http\Requests\Product\StoreRequest;
 use App\Service\Product\Contracts\ProductFilterDtoFactoryContract;
 use App\Service\Product\Contracts\ProductServiceContract;
 use App\Service\Product\Exceptions\ProductCreateException;
+use App\Service\Product\Exceptions\ProductNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -62,6 +63,28 @@ class ProductController extends Controller
             return redirect()->route('product.index');
         } catch (ProductCreateException $e) {
             return redirect()->back()->with('alert.error', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return RedirectResponse|Response
+     */
+    public function show(string $id)
+    {
+        try {
+            $product = $this->productService->findOneById($id);
+
+            return Inertia::render('Product/Show', [
+                'product' => $product,
+            ]);
+        } catch (ProductNotFoundException) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         } catch (Throwable $e) {
             Log::error($e);
 

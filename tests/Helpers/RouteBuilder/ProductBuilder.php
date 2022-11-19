@@ -27,4 +27,14 @@ class ProductBuilder
     {
         return '/products';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function show(string $id): string
+    {
+        return '/products/' . $id;
+    }
 }
