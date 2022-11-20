@@ -57,7 +57,12 @@ watch(nameFilter, debounce(function (value) {
                                     {{ product.name }}
                                 </th>
                                 <td>
-                                    <Link :href="route('product.show', product.id)" v-text="'View'" class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"/>
+                                    <div class="flex items-center">
+                                        <div class="ml-auto">
+                                            <Link :href="route('product.show', product.id)" v-text="'View'" class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"/>
+                                            <Link :href="route('product.edit', product.id)" v-text="'Edit'" class="mx-2 my-2 bg-green-700 transition duration-150 ease-in-out hover:bg-green-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"/>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                             </tbody>

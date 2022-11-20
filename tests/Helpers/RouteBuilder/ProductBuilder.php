@@ -37,4 +37,24 @@ class ProductBuilder
     {
         return '/products/' . $id;
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function update(string $id): string
+    {
+        return '/products/' . $id;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function edit(string $id): string
+    {
+        return '/products/' . $id . '/edit';
+    }
 }

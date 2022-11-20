@@ -12,16 +12,16 @@ test('redirect guest to login', function () {
 
     $product = modelBuilderHelper()->product->create();
 
-    $response = $this->get(routeBuilderHelper()->product->show($product->id));
+    $response = $this->get(routeBuilderHelper()->product->edit($product->id));
 
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page->component('Auth/Login'));
 });
 
-test('not existed', function () {
+test('not found', function () {
     authHelper()->signIn();
 
-    $response = $this->get(routeBuilderHelper()->product->show(faker()->uuid));
+    $response = $this->get(routeBuilderHelper()->product->edit(faker()->uuid));
 
     $response->assertNotFound();
 });
@@ -29,20 +29,20 @@ test('not existed', function () {
 test('wrong id', function () {
     authHelper()->signIn();
 
-    $response = $this->get(routeBuilderHelper()->product->show('123'));
+    $response = $this->get(routeBuilderHelper()->product->edit(999));
 
     $response->assertRedirect(routeBuilderHelper()->common->dashboard());
 });
 
-test('show product info', function () {
+test('success', function () {
     authHelper()->signIn();
 
     $product = modelBuilderHelper()->product->create();
 
-    $response = $this->get(routeBuilderHelper()->product->show($product->id));
+    $response = $this->get(routeBuilderHelper()->product->edit($product->id));
 
     $response->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('Product/Show')
+        ->assertInertia(fn (Assert $page) => $page->component('Product/Edit')
             ->has('product', fn (Assert $page) => $page->whereAll([
                 'id'   => $product->id,
                 'name' => $product->name,

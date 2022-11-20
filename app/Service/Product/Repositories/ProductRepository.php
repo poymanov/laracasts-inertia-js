@@ -8,8 +8,10 @@ use App\Service\Product\Contracts\ProductRepositoryContract;
 use App\Service\Product\Dtos\ProductCreateDto;
 use App\Service\Product\Dtos\ProductDto;
 use App\Service\Product\Dtos\ProductFilterDto;
+use App\Service\Product\Dtos\ProductUpdateDto;
 use App\Service\Product\Exceptions\ProductCreateException;
 use App\Service\Product\Exceptions\ProductNotFoundException;
+use App\Service\Product\Exceptions\ProductUpdateException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductRepository implements ProductRepositoryContract
@@ -28,11 +30,7 @@ class ProductRepository implements ProductRepositoryContract
      */
     public function findOneById(string $id): ProductDto
     {
-        $product = Product::where(['id' => $id])->first();
-
-        if (is_null($product)) {
-            throw new ProductNotFoundException($id);
-        }
+        $product = $this->findOneModelById($id);
 
         return $this->productDtoFactory->createFromModel($product);
     }
@@ -52,10 +50,7 @@ class ProductRepository implements ProductRepositoryContract
     }
 
     /**
-     * @param ProductCreateDto $productCreateDto
-     *
-     * @return void
-     * @throws ProductCreateException
+     * @inheritDoc
      */
     public function create(ProductCreateDto $productCreateDto): void
     {
@@ -65,5 +60,36 @@ class ProductRepository implements ProductRepositoryContract
         if (!$product->save()) {
             throw new ProductCreateException();
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function update(string $id, ProductUpdateDto $productUpdateDto): void
+    {
+        $product = $this->findOneModelById($id);
+
+        $product->name = $productUpdateDto->name;
+
+        if (!$product->save()) {
+            throw new ProductUpdateException($id);
+        }
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return Product
+     * @throws ProductNotFoundException
+     */
+    private function findOneModelById(string $id): Product
+    {
+        $product = Product::whereId($id)->first();
+
+        if (is_null($product)) {
+            throw new ProductNotFoundException($id);
+        }
+
+        return $product;
     }
 }

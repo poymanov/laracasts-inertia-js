@@ -5,8 +5,10 @@ namespace App\Service\Product\Contracts;
 use App\Service\Product\Dtos\ProductCreateDto;
 use App\Service\Product\Dtos\ProductDto;
 use App\Service\Product\Dtos\ProductFilterDto;
+use App\Service\Product\Dtos\ProductUpdateDto;
 use App\Service\Product\Exceptions\ProductCreateException;
 use App\Service\Product\Exceptions\ProductNotFoundException;
+use App\Service\Product\Exceptions\ProductUpdateException;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductRepositoryContract
@@ -39,4 +41,16 @@ interface ProductRepositoryContract
      * @throws ProductCreateException
      */
     public function create(ProductCreateDto $productCreateDto): void;
+
+    /**
+     * Обновление товара
+     *
+     * @param string           $id
+     * @param ProductUpdateDto $productUpdateDto
+     *
+     * @return void
+     * @throws ProductNotFoundException
+     * @throws ProductUpdateException
+     */
+    public function update(string $id, ProductUpdateDto $productUpdateDto): void;
 }
