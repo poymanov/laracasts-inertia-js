@@ -18,6 +18,22 @@ test('redirect guest to login', function () {
         ->assertInertia(fn (Assert $page) => $page->component('Auth/Login'));
 });
 
+test('not existed', function () {
+    authHelper()->signIn();
+
+    $response = $this->get(routeBuilderHelper()->product->update(faker()->uuid), ['name' => faker()->word]);
+
+    $response->assertNotFound();
+});
+
+test('wrong id', function () {
+    authHelper()->signIn();
+
+    $response = $this->get(routeBuilderHelper()->product->update('123'), ['name' => faker()->word]);
+
+    $response->assertRedirect(routeBuilderHelper()->common->dashboard());
+});
+
 test('validation failed: empty name', function () {
     authHelper()->signIn();
 

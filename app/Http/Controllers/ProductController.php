@@ -7,6 +7,7 @@ use App\Http\Requests\Product\UpdateRequest;
 use App\Service\Product\Contracts\ProductFilterDtoFactoryContract;
 use App\Service\Product\Contracts\ProductServiceContract;
 use App\Service\Product\Exceptions\ProductCreateException;
+use App\Service\Product\Exceptions\ProductDeleteException;
 use App\Service\Product\Exceptions\ProductNotFoundException;
 use App\Service\Product\Exceptions\ProductUpdateException;
 use Illuminate\Http\RedirectResponse;
@@ -62,7 +63,7 @@ class ProductController extends Controller
         try {
             $this->productService->create($request->get('name'));
 
-            return redirect()->route('product.index');
+            return redirect()->route('products.index');
         } catch (ProductCreateException $e) {
             return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
@@ -127,10 +128,34 @@ class ProductController extends Controller
         try {
             $this->productService->update($id, $request->get('name'));
 
-            return redirect()->route('product.index');
+            return redirect()->route('products.index');
         } catch (ProductNotFoundException) {
             abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         } catch (ProductUpdateException $e) {
+            Log::error($e);
+
+            return redirect()->back()->with('alert.error', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error($e);
+
+            return redirect()->route('dashboard')->with('alert.error', 'Something went wrong');
+        }
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return RedirectResponse|void
+     */
+    public function destroy(string $id)
+    {
+        try {
+            $this->productService->delete($id);
+
+            return redirect()->route('products.index');
+        } catch (ProductNotFoundException) {
+            abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
+        } catch (ProductDeleteException $e) {
             Log::error($e);
 
             return redirect()->back()->with('alert.error', $e->getMessage());

@@ -25,14 +25,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::group(['prefix' => 'products', 'as' => 'product.'], function () {
-        Route::get('', [ProductController::class, 'index'])->name('index');
-        Route::get('create', [ProductController::class, 'create'])->name('create');
-        Route::post('', [ProductController::class, 'store'])->name('store');
-        Route::get('{id}', [ProductController::class, 'show'])->name('show');
-        Route::get('{id}/edit', [ProductController::class, 'edit'])->name('edit');
-        Route::patch('{id}', [ProductController::class, 'update'])->name('update');
-    });
+    Route::resource('products', ProductController::class);
 });
 
 require __DIR__ . '/auth.php';

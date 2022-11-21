@@ -5,6 +5,7 @@ namespace App\Service\Product\Contracts;
 use App\Service\Product\Dtos\ProductDto;
 use App\Service\Product\Dtos\ProductFilterDto;
 use App\Service\Product\Exceptions\ProductCreateException;
+use App\Service\Product\Exceptions\ProductDeleteException;
 use App\Service\Product\Exceptions\ProductNotFoundException;
 use App\Service\Product\Exceptions\ProductUpdateException;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -51,4 +52,15 @@ interface ProductServiceContract
      * @throws ProductUpdateException
      */
     public function update(string $id, string $name): void;
+
+    /**
+     * Удаление товара
+     *
+     * @param string $id
+     *
+     * @return void
+     * @throws ProductDeleteException
+     * @throws ProductNotFoundException
+     */
+    public function delete(string $id): void;
 }

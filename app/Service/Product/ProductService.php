@@ -54,4 +54,12 @@ class ProductService implements ProductServiceContract
 
         $this->productRepository->update($id, $productUpdateDto);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(string $id): void
+    {
+        $this->productRepository->delete($id);
+    }
 }

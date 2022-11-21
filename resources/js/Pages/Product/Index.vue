@@ -13,8 +13,14 @@ let props = defineProps({
 let nameFilter = ref(props.filters.name);
 
 watch(nameFilter, debounce(function (value) {
-    Inertia.get(route('product.index'), {name: value}, {preserveState: true, replace: true});
+    Inertia.get(route('products.index'), {name: value}, {preserveState: true, replace: true});
 }, 300));
+
+let destroy = (id) => {
+    if (confirm('Are you sure you want to delete this product?')) {
+        Inertia.delete(route('products.destroy', id))
+    }
+};
 
 </script>
 
@@ -59,8 +65,11 @@ watch(nameFilter, debounce(function (value) {
                                 <td>
                                     <div class="flex items-center">
                                         <div class="ml-auto">
-                                            <Link :href="route('product.show', product.id)" v-text="'View'" class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"/>
-                                            <Link :href="route('product.edit', product.id)" v-text="'Edit'" class="mx-2 my-2 bg-green-700 transition duration-150 ease-in-out hover:bg-green-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"/>
+                                            <Link :href="route('products.show', product.id)" v-text="'View'" class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"/>
+                                            <Link :href="route('products.edit', product.id)" v-text="'Edit'" class="mx-2 my-2 bg-green-700 transition duration-150 ease-in-out hover:bg-green-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600"/>
+                                            <button @click="destroy(product.id)" class="mx-2 my-2 bg-red-700 transition duration-150 ease-in-out hover:bg-red-600 rounded text-white uppercase px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">
+                                                Delete
+                                            </button>
                                         </div>
                                     </div>
                                 </td>

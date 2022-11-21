@@ -57,4 +57,14 @@ class ProductBuilder
     {
         return '/products/' . $id . '/edit';
     }
+
+    /**
+     * @param string $id
+     *
+     * @return string
+     */
+    public function delete(string $id): string
+    {
+        return '/products/' . $id;
+    }
 }

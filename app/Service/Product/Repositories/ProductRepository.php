@@ -10,6 +10,7 @@ use App\Service\Product\Dtos\ProductDto;
 use App\Service\Product\Dtos\ProductFilterDto;
 use App\Service\Product\Dtos\ProductUpdateDto;
 use App\Service\Product\Exceptions\ProductCreateException;
+use App\Service\Product\Exceptions\ProductDeleteException;
 use App\Service\Product\Exceptions\ProductNotFoundException;
 use App\Service\Product\Exceptions\ProductUpdateException;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -73,6 +74,18 @@ class ProductRepository implements ProductRepositoryContract
 
         if (!$product->save()) {
             throw new ProductUpdateException($id);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function delete(string $id): void
+    {
+        $product = $this->findOneModelById($id);
+
+        if (!$product->delete()) {
+            throw new ProductDeleteException($id);
         }
     }
 
