@@ -63,7 +63,7 @@ class ProductController extends Controller
         try {
             $this->productService->create($request->get('name'));
 
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product created.');
         } catch (ProductCreateException $e) {
             return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
@@ -128,7 +128,7 @@ class ProductController extends Controller
         try {
             $this->productService->update($id, $request->get('name'));
 
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product updated.');
         } catch (ProductNotFoundException) {
             abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         } catch (ProductUpdateException $e) {
@@ -152,7 +152,7 @@ class ProductController extends Controller
         try {
             $this->productService->delete($id);
 
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('success', 'Product deleted.');
         } catch (ProductNotFoundException) {
             abort(\Illuminate\Http\Response::HTTP_NOT_FOUND);
         } catch (ProductDeleteException $e) {

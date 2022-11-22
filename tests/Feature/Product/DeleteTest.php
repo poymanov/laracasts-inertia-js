@@ -39,7 +39,9 @@ test('success', function () {
     $product = modelBuilderHelper()->product->create();
 
     $response = $this->delete(routeBuilderHelper()->product->delete($product->id));
-    $response->assertRedirect(routeBuilderHelper()->product->index());
+    $response
+        ->assertRedirect(routeBuilderHelper()->product->index())
+        ->assertSessionHas('success', 'Product deleted.');
 
     $this->assertDatabaseMissing('products', ['id' => $product->id, 'deleted_at' => null]);
 });

@@ -67,8 +67,10 @@ test('success', function () {
     $product = modelBuilderHelper()->product->create();
 
     $response = $this->patch(routeBuilderHelper()->product->update($product->id), ['name' => $name]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect(routeBuilderHelper()->product->index());
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect(routeBuilderHelper()->product->index())
+        ->assertSessionHas('success', 'Product updated.');
 
     $this->assertDatabaseHas('products', ['id' => $product->id, 'name' => $name]);
 });

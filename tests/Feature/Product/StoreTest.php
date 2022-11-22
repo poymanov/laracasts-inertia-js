@@ -38,8 +38,10 @@ test('success', function () {
     $name = faker()->text();
 
     $response = $this->post(routeBuilderHelper()->product->store(), ['name' => $name]);
-    $response->assertSessionHasNoErrors();
-    $response->assertRedirect('/products');
+    $response
+        ->assertSessionHasNoErrors()
+        ->assertRedirect('/products')
+        ->assertSessionHas('success', 'Product created.');
 
     $this->assertDatabaseHas('products', ['name' => $name]);
 });
