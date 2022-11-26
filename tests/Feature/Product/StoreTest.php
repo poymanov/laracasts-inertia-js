@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -32,6 +33,15 @@ test('validation failed: too long name', function () {
     $response->assertSessionHasErrors(['name']);
 });
 
+test('failed', function () {
+    authHelper()->signIn();
+
+    Product::saving(fn () => false);
+
+    $response = $this->post(routeBuilderHelper()->product->store(), ['name' => faker()->text]);
+    $response->assertSessionHas('alert.error', 'Failed to create product.');
+});
+
 test('success', function () {
     authHelper()->signIn();
 
@@ -40,7 +50,7 @@ test('success', function () {
     $response = $this->post(routeBuilderHelper()->product->store(), ['name' => $name]);
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect('/products')
+        ->assertRedirect(routeBuilderHelper()->product->index())
         ->assertSessionHas('success', 'Product created.');
 
     $this->assertDatabaseHas('products', ['name' => $name]);

@@ -65,6 +65,8 @@ class ProductController extends Controller
 
             return redirect()->route('products.index')->with('success', 'Product created.');
         } catch (ProductCreateException $e) {
+            Log::error($e);
+
             return redirect()->back()->with('alert.error', $e->getMessage());
         } catch (Throwable $e) {
             Log::error($e);

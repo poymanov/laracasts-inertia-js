@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -31,6 +32,17 @@ test('wrong id', function () {
     $response = $this->get(routeBuilderHelper()->product->delete('123'));
 
     $response->assertRedirect(routeBuilderHelper()->common->dashboard());
+});
+
+test('failed', function () {
+    authHelper()->signIn();
+
+    $product = modelBuilderHelper()->product->create();
+
+    Product::deleting(fn () => false);
+
+    $response = $this->delete(routeBuilderHelper()->product->delete($product->id));
+    $response->assertSessionHas('alert.error', 'Failed to delete product: ' . $product->id);
 });
 
 test('success', function () {
