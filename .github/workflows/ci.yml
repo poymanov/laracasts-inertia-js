@@ -44,8 +44,13 @@ jobs:
 
       - name: Run PHPUnit
         run: composer test
-  lint:
-    uses: poymanov/actions/.github/workflows/laravel-pint.yml@master
+  test:
+    uses: poymanov/actions/.github/workflows/test.yml@master
+    with:
+      os: >-
+        ['ubuntu-latest']
+      php: >-
+        ['8.0']
   stan:
     runs-on: ubuntu-latest
 
